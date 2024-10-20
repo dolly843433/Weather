@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Settings</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>User Settings</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city" required>
+
+        <label for="temperature_threshold">Temperature Threshold (°C):</label>
+        <input type="number" id="temperature_threshold" name="temperature_threshold" step="0.1" required>
+
+        <label for="condition_alert">Condition Alert:</label>
+        <input type="text" id="condition_alert" name="condition_alert">
+
+        <label for="alert_enabled">Enable Alerts:</label>
+        <input type="checkbox" id="alert_enabled" name="alert_enabled">
+
+        <button type="submit">Save Settings</button>
+    </form>
+    <a href="{% url 'home' %}">Back to Dashboard</a>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function refreshTable() {
+            $.ajax({
+                url: "{% url 'dashboard' %}",  // Adjust to your URL
+                method: "GET",
+                success: function(data) {
+                    let tbody = '';
+                    data.forEach(function(summary) {
+                        tbody += '<tr>';
+                        tbody += '<td>' + summary.city + '</td>';
+                        tbody += '<td>' + summary.date + '</td>';
+                        tbody += '<td>' + summary.avg_temperature.toFixed(2) + '</td>';
+                        tbody += '<td>' + summary.max_temperature.toFixed(2) + '</td>';
+                        tbody += '<td>' + summary.min_temperature.toFixed(2) + '</td>';
+                        tbody += '<td>' + summary.dominant_condition + '</td>';
+                        tbody += '</tr>';
+                    });
+
+                    $('table tbody').html(tbody);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching summaries:", error);
+                }
+            });
+        }
+    
+        setInterval(refreshTable, 300000);  
+        window.addEventListener("load", (event) => {
+            refreshTable();
+        });
+
+    </script>
+    
+</head>
+<body>
+    <h1>Weather Dashboard</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>City</th>
+                <th>Date</th>
+                <th>Average Temperature (°C)</th>
+                <th>Max Temperature (°C)</th>
+                <th>Min Temperature (°C)</th>
+                <th>Dominant Condition</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <a href="{% url 'settings_view' %}">Manage Settings</a>
+</body>
+</html>
